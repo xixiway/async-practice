@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>异步编程练习</title>
+</head>
+
+<body>
+    <h1>JavaScript 异步练习</h1>
+    <button id="startButton">开始</button>
+
+    <button id="errorButton">测试异常</button>
+
+    <script>
+        const startButton = document.getElementById("startButton");
+
+        function saveTask() {
+            return new Promise(function (resolve, reject) {
+                setTimeout(function () {
+                    const success = false;
+
+                    if (success) {
+                        resolve("任务保存成功");
+                    } else {
+                        reject(new Error(" 服务器连接失败"));
+                    }
+
+                }, 2000);
+            });
+        }
+
+        startButton.addEventListener("click", async function () {
+            
+            console.log("开始保存")
+
+            try {
+
+                const result = await saveTask();
+                console.log("保存成功");
+
+            } catch (error) {
+                console.log("保存出错：" + error.message);
+            }
+
+            console.log("保存流程结束");
+        });
+
+        const errorButton = document.getElementById("errorButton");
+
+        function testError() {
+            console.log("第一步");
+            throw new Error("模拟发生异常");  //Error对象
+            console.log("第二步");
+        }
+
+        errorButton.addEventListener("click", function () {
+            try {
+                testError();
+            } catch (error) {
+                console.log("捕获错误：" + error.message);
+                console.log(error.name);
+                console.log(error.stack);
+            }
+
+            console.log("第三步");
+        });
+
+    </script>
+
+</body>
+
+</html>
